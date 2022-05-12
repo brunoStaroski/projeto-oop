@@ -1,0 +1,15 @@
+aside.menu-area {
+    background-color: #353f49;
+}
+
+nav a {
+    padding: 15px;
+    font-weight: 300;
+    text-decoration: none;
+    color: #F5F5F5;
+    display: block;
+}
+
+nav a:hover {
+    background: #353f49;
+}
