@@ -8,9 +8,12 @@ import './App.css';
 import Nav from '../template/Nav'
 
 export default props =>
-    <BrowserRouter>
-        <div className={'app'}>
+    <div className={'app'}>
+
+        <BrowserRouter>
             <Nav />
             <Routes />
-        </div>
-    </BrowserRouter>
+        </BrowserRouter>
+
+    </div>
+
