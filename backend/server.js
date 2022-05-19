@@ -11,15 +11,15 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.json());
 
-app.get('/', async (req, res) => {
+app.get('/obter-lista-clientes', async (req, res) => {
     const r = await service.obterListaClientes();
     res.json(r);
 });
 
-app.post('/path/calcular-caminho', async (req, res) => {
+app.post('/gravar-novo-cliente', async (req, res) => {
     if (!(Object.is(req.body, null)) && !(Object.is(req.body, ''))) {
-        const r = await service.retornarCaminho(req.body.origem, req.body.destino);
-        console.log(r);
+        console.log(req.body);
+        const r = await service.salvarNovoCliente(req.body);
         res.json(r);
     }
 });

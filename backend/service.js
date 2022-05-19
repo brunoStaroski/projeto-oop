@@ -1,56 +1,34 @@
 const pg = require('pg');
-const pool = new pg.Pool({user: 'postgres',host: 'localhost',database: 'projeto-opp',password: 'postgres',port: 5432});
+const pool = new pg.Pool({user: 'postgres',host: 'localhost',database: 'projeto-oop',password: 'postgres',port: 5432});
 
 module.exports = {
-    buscarConexoes: async function (origem, visitados) {
+    salvarNovoCliente: async function (cliente) {
         try {
             const client = await pool.connect();
-            let result = await client.query("select * from path where path.origem like" + "'" + origem + "' and path.destino not in ('"+ visitados.join("','") +"')" );
-
+            const params = [cliente.nome, cliente.email]
+            console.log(params);
+            let result = await client.query('INSERT INTO cliente(nome, email) VALUES ($1, $2);', params);
             client.release();
-            return path;
+            return true;
         } catch (err){
             console.log(err);
+            return false;
         }
     },
 
     obterListaClientes: async function () {
-      console.log('deu boa');
-      return 'deu boa';
-    },
-
-    retornarCaminho: async function (origem, destino) {
-        return await this.calcularCaminho(origem, destino);
-    },
-
-    calcularCaminho: async function (origem, destino) {
-        let distanciaTotal = 0;
-        let conexoes;
-        let final = '';
-        let result = [];
-        let pathTemp;
-        let distTemp = Infinity;
-        let visitados = [origem];
-        conexoes = await this.buscarConexoes(origem, visitados);
-        while (final != destino) {
-            console.log('entrou while')
-            pathTemp = conexoes[0];
-            conexoes.forEach(p => {
-                if (distTemp > (p.distanciaPath)) {
-                    distTemp = p.distanciaPath;
-                    pathTemp = p;
-                }
-            });
-            distanciaTotal += distTemp;
-            final = pathTemp.destinoPath;
-            visitados.push(pathTemp.destinoPath);
-            result.push(pathTemp);
-            conexoes = await this.buscarConexoes(final, visitados);
+        try {
+            const client = await pool.connect();
+            let result = await client.query('SELECT * FROM cliente ORDER BY id ASC');
+            client.release();
+            if (result) {
+                return result.rows;
+            } else {
+                return [];
+            }
+        } catch (err){
+            console.log(err);
         }
-        console.log(`result:  ${result}`);
-        console.log(`distancia total: ${distanciaTotal}`)
-        return new Resultado(result,distanciaTotal);
-        pool.end();
     },
 
 }
