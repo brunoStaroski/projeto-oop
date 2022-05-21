@@ -9,7 +9,7 @@ const api = axios.create({
 
 const initialState = {
     cliente: {id: '', nome: '', email: ''},
-    list: []
+    listaCliente: []
 }
 
 export default class Cliente extends Component {
@@ -28,32 +28,49 @@ export default class Cliente extends Component {
         const cliente = this.state.cliente;
         console.log('cliente ' + this.state.cliente);
         if (cliente.id) {
-            this.editarCliente()
+            this.editarCliente(cliente)
         } else {
-            this.gravarNovoCliente();
+            this.gravarNovoCliente(cliente);
         }
     }
 
     gravarNovoCliente(cliente) {
         api.post('/gravar-novo-cliente', cliente).then(response => {
-                if (response.data === true) {
-                    console.log('gravou novo usuario');
+                if (response.data) {
+                    console.log('gravou novo cliente');
+                    this.limparCampos();
+                    this.obterListaClientes();
                 } else {
-                    console.log('erro ao gravar usuario')
+                    console.log('erro ao gravar cliente')
                 }
-                this.limparCampos();
-                this.obterListaClientes();
             }).catch(err => {
             console.log(err);
         })
     }
 
     editarCliente(cliente) {
-        api.put('/editar-cliente',cliente).then(response => {
-                console.log('cliente editado com sucesso');
-                this.limparCampos();
-                this.obterListaClientes();
+        api.post('/editar-cliente', cliente).then(response => {
+                if (response.data) {
+                    console.log('cliente editado com sucesso');
+                    this.limparCampos();
+                    this.obterListaClientes();
+                } else {
+                    console.log('erro ao editar cliente')
+                }
             }).catch(err => {
+            console.log(err);
+        })
+    }
+
+    excluirCliente(cliente) {
+        api.post('/excluir-cliente', cliente).then(response => {
+            if (response.data) {
+                console.log('cliente editado com sucesso');
+                this.obterListaClientes();
+            } else {
+                console.log('erro ao editar cliente')
+            }
+        }).catch(err => {
             console.log(err);
         })
     }
@@ -66,18 +83,19 @@ export default class Cliente extends Component {
 
     obterListaClientes() {
         api.get('obter-lista-clientes').then((response) => {
-            this.setState({list: response.data});
+            this.setState({listaCliente: response.data});
         }).catch((err) => {
             console.log(err);
         });
     }
 
-    excluirCliente() {
-        //TODO
+    obterClienteExclusao(cliente) {
+        this.excluirCliente(cliente);
     }
 
-    carregarCamposEdicao() {
-        //TODO
+    carregarCamposEdicao(cliente) {
+        console.log(cliente)
+        this.setState({cliente})
     }
 
     renderForm() {
@@ -90,7 +108,7 @@ export default class Cliente extends Component {
                 <div>
                     <label>Nome</label>
                     <input id={'nomeCliente'} type={'text'} name={'nome'}
-                           value={this.state.cliente.name} onChange={e => this.atualizarCampos(e)}
+                           value={this.state.cliente.nome} onChange={e => this.atualizarCampos(e)}
                            placeholder={'Digite o nome'} className={'form-control'} />
                 </div>
                 <div>
@@ -130,16 +148,16 @@ export default class Cliente extends Component {
     }
 
     renderLinhasClientes() {
-        return this.state.list.map(cliente => {
+        return this.state.listaCliente.map(cliente => {
             return (
                 <tr key={cliente.id}>
                     <td>{cliente.nome}</td>
                     <td>{cliente.email}</td>
                     <td>
-                        <button className={'btn btn-warning'} onClick={e => this.carregarCamposEdicao(e)}>
+                        <button className={'btn btn-warning'} onClick={e => this.carregarCamposEdicao(cliente)}>
                             <i className={'fa fa-pencil'}></i>
                         </button>
-                        <button className={'btn btn-danger'} onClick={e => this.excluirCliente(e)}>
+                        <button className={'btn btn-danger'} onClick={e => this.obterClienteExclusao(cliente)}>
                             <i className={'fa fa-trash'}></i>
                         </button>
                     </td>
