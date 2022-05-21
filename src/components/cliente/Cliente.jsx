@@ -35,7 +35,7 @@ export default class Cliente extends Component {
     }
 
     gravarNovoCliente(cliente) {
-        api.post('/gravar-novo-cliente', cliente).then(response => {
+        api.post('/gravar?rota=cliente', cliente).then(response => {
                 if (response.data) {
                     console.log('gravou novo cliente');
                     this.limparCampos();
@@ -49,7 +49,7 @@ export default class Cliente extends Component {
     }
 
     editarCliente(cliente) {
-        api.post('/editar-cliente', cliente).then(response => {
+        api.post('/editar-cliente?rota=cliente', cliente).then(response => {
                 if (response.data) {
                     console.log('cliente editado com sucesso');
                     this.limparCampos();
@@ -63,7 +63,7 @@ export default class Cliente extends Component {
     }
 
     excluirCliente(cliente) {
-        api.post('/excluir-cliente', cliente).then(response => {
+        api.post('/excluir-cliente?rota=cliente', cliente).then(response => {
             if (response.data) {
                 console.log('cliente editado com sucesso');
                 this.obterListaClientes();
@@ -82,7 +82,7 @@ export default class Cliente extends Component {
     }
 
     obterListaClientes() {
-        api.get('obter-lista-clientes').then((response) => {
+        api.get('obter-lista?rota=cliente').then((response) => {
             this.setState({listaCliente: response.data});
         }).catch((err) => {
             console.log(err);

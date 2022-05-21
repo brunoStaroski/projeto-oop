@@ -11,32 +11,65 @@ app.use(function(req, res, next) {
 
 app.use(bodyParser.json());
 
-app.get('/obter-lista-clientes', async (req, res) => {
-    const r = await clienteService.obterListaClientes();
-    res.json(r);
-});
+app.get('/obter-lista', async (req, res) => {
+    if (!(Object.is(req.query.rota, null)) && !(Object.is(req.query.rota, ''))) {
+        let result;
+        switch (req.query.rota) {
+            case 'cliente':
+                result = await clienteService.obterListaClientes();
+                break;
+        }
 
-app.post('/gravar-novo-cliente', async (req, res) => {
-    if (!(Object.is(req.body, null)) && !(Object.is(req.body, ''))) {
-        const r = await clienteService.salvarNovoCliente(req.body);
-        res.json(r);
+        res.json(result);
     }
 });
 
-app.post('/editar-cliente', async (req, res) => {
-    if (!(Object.is(req.body, null)) && !(Object.is(req.body, ''))) {
-        console.log(req.body);
-        const r = await clienteService.editarCliente(req.body);
-        res.json(r);
+app.post('/gravar', async (req, res) => {
+    if (!(Object.is(req.query.rota, null)) && !(Object.is(req.query.rota, ''))) {
+        if (!(Object.is(req.body, null)) && !(Object.is(req.body, ''))) {
+            let result;
+            switch (req.query.rota) {
+                case 'cliente':
+                    console.log(req.body)
+                    result = await clienteService.salvarNovoCliente(req.body);
+                    break;
+            }
+
+            res.json(result);
+        }
     }
 });
 
-app.post('/excluir-cliente', async (req, res) => {
-    if (!(Object.is(req.body, null)) && !(Object.is(req.body, ''))) {
-        console.log(req.body);
-        const r = await clienteService.excluirCliente(req.body);
-        res.json(r);
+app.post('/editar', async (req, res) => {
+    if (!(Object.is(req.query.rota, null)) && !(Object.is(req.query.rota, ''))) {
+        if (!(Object.is(req.body, null)) && !(Object.is(req.body, ''))) {
+            let result;
+            switch (req.query.rota) {
+                case "cliente":
+                    result = await clienteService.editarCliente(req.body);
+                    break;
+            }
+
+            res.json(result);
+        }
     }
+
+});
+
+app.post('/excluir', async (req, res) => {
+    if (!(Object.is(req.query.rota, null)) && !(Object.is(req.query.rota, ''))) {
+        if (!(Object.is(req.body, null)) && !(Object.is(req.body, ''))) {
+            let result;
+            switch (req.query.rota) {
+                case "cliente":
+                    result = await clienteService.excluirCliente(req.body);
+                    break;
+            }
+
+            res.json(result);
+        }
+    }
+
 });
 
 app.listen(port, () => {
