@@ -49,7 +49,7 @@ export default class Cliente extends Component {
     }
 
     editarCliente(cliente) {
-        api.post('/editar-cliente?rota=cliente', cliente).then(response => {
+        api.post('/editar?rota=cliente', cliente).then(response => {
                 if (response.data) {
                     console.log('cliente editado com sucesso');
                     this.limparCampos();
@@ -63,7 +63,7 @@ export default class Cliente extends Component {
     }
 
     excluirCliente(cliente) {
-        api.post('/excluir-cliente?rota=cliente', cliente).then(response => {
+        api.post('/excluir?rota=cliente', cliente).then(response => {
             if (response.data) {
                 console.log('cliente editado com sucesso');
                 this.obterListaClientes();
