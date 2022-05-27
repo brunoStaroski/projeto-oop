@@ -1,59 +1,49 @@
-const pg = require('pg');
-const pool = new pg.Pool({user: 'postgres',host: 'localhost',database: 'projeto-oop',password: 'postgres',port: 5432});
+const mysql = require('mysql');
+const util = require('util');
+
+const con = mysql.createConnection({
+                host     : 'localhost',
+                user     : 'root',
+                password : 'root',
+                database : 'projeto-oop'
+            });
+
+con.query = util.promisify(con.query).bind(con);
 
 module.exports = {
     salvarNovoCliente: async function (cliente) {
-        try {
-            const client = await pool.connect();
-            const params = [cliente.nome, cliente.email]
-            await client.query('INSERT INTO cliente(nome, email) VALUES ($1, $2);', params);
-            client.release();
-            return true;
-        } catch (err){
-            console.log(err);
-            return false;
-        }
+        const params = [cliente.nome, cliente.email]
+        await con.query('INSERT INTO cliente(nome, email) VALUES (?, ?);', params)
+            .catch(err => {
+                console.log(err);
+                return false;
+            });
+        return true;
     },
 
     editarCliente: async function (cliente) {
-        try {
-            const client = await pool.connect();
-            const params = [cliente.id, cliente.nome, cliente.email]
-            await client.query('UPDATE cliente SET id=$1, nome=$2, email=$3 WHERE cliente.id = $1;', params);
-            client.release();
-            return true;
-        } catch (err){
-            console.log(err);
-            return false;
-        }
+        const params = [cliente.id, cliente.nome, cliente.email, cliente.id];
+        await con.query('UPDATE cliente SET id = ?, nome = ?, email = ? WHERE id = ?;', params)
+            .catch(err => {
+                console.log(err);
+                return false;
+            });
+        return true;
     },
 
     obterListaClientes: async function () {
-        try {
-            const client = await pool.connect();
-            let result = await client.query('SELECT * FROM cliente ORDER BY id ASC');
-            client.release();
-            if (result) {
-                return result.rows;
-            } else {
-                return [];
-            }
-        } catch (err){
-            console.log(err);
-        }
+        return await con.query('SELECT * FROM cliente ORDER BY id ASC')
+            .catch(err => console.log(err));
     },
 
     excluirCliente: async function (cliente) {
-        try {
-            const client = await pool.connect();
-            const params = [cliente.id, cliente.nome, cliente.email]
-            await client.query('DELETE FROM cliente WHERE cliente.id = $1 AND cliente.nome = $2 AND cliente.email = $3 ;', params);
-            client.release();
-            return true;
-        } catch (err){
-            console.log(err);
-            return false;
-        }
+        const params = [cliente.id, cliente.nome, cliente.email]
+        await con.query('DELETE FROM cliente WHERE cliente.id = ? AND cliente.nome = ? AND cliente.email = ? ;', params)
+            .catch(err => {
+                console.log(err);
+                return false;
+            });
+        return true;
     },
 
 }

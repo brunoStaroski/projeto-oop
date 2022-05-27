@@ -78,7 +78,7 @@ export default class Cliente extends Component {
     atualizarCampos(event) {
         const cliente = {...this.state.cliente};
         cliente[event.target.name] = event.target.value;
-        this.setState({cliente});//TODO
+        this.setState({cliente});
     }
 
     obterListaClientes() {
