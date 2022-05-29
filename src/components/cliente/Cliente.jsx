@@ -83,6 +83,9 @@ export default class Cliente extends Component {
 
     obterListaClientes() {
         api.get('obter-lista?rota=cliente').then((response) => {
+            if (response.data === null) {
+                this.setState({listaCliente: []});
+            }
             this.setState({listaCliente: response.data});
         }).catch((err) => {
             console.log(err);
@@ -148,6 +151,9 @@ export default class Cliente extends Component {
     }
 
     renderLinhasClientes() {
+        if (this.state.listaCliente.length === 0) {
+            return <p>Nenhum cliente cadastrado</p>
+        }
         return this.state.listaCliente.map(cliente => {
             return (
                 <tr key={cliente.id}>

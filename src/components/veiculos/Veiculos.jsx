@@ -153,6 +153,9 @@ export default class Veiculos extends Component {
     }
 
     renderLinhasClientes() {
+        if (this.state.listaVeiculos.length === 0) {
+            return <p>Nenhum veiculo cadastrado</p>
+        }
         return this.state.listaVeiculos.map(veiculo => {
             return (
                 <tr key={veiculo.id}>
