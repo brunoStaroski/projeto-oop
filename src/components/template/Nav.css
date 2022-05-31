@@ -4,7 +4,8 @@ aside.menu-area {
 
 nav a {
     padding: 15px;
-    font-weight: 300;
+    font-weight: 250;
+    font-size: 20px;
     text-decoration: none;
     color: #F5F5F5;
     display: block;

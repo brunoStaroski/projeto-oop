@@ -14,9 +14,6 @@ export default props =>
             <Link to={'/veiculos'}>
                 <i className={'fa fa-car'}></i> Veiculos
             </Link>
-            <Link to={'/estoque'}>
-                <i className={'fa fa-dropbox'}></i> Estoque
-            </Link>
             <Link to={'/vendas'}>
                 <i className={'fa fa-shopping-cart'}></i> Vendas
             </Link>

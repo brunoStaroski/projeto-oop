@@ -1,13 +1,14 @@
 import React, {Component} from "react";
 import Main from "../template/Main";
 import axios from "axios";
+import '../../styles/styles.css'
 
 const api = axios.create({
     baseURL: "http://localhost:3080",
 });
 
 const initialState = {
-    veiculo: {id: '', marca: '', modelo: '', valor: 0},
+    veiculo: {id: '', marca: '', modelo: '', valor: 0, quantidade: 0},
     listaVeiculos: []
 }
 
@@ -122,6 +123,12 @@ export default class Veiculos extends Component {
                            placeholder={'Digite o preço'} className={'form-control'} />
                 </div>
                 <div>
+                    <label>Estoque</label>
+                    <input id={'quantidadeVeiculo'} type={'text'} name={'quantidade'}
+                           value={this.state.veiculo.quantidade} onChange={e => this.atualizarCampos(e)}
+                           placeholder={'Digite a quantidade em estoque'} className={'form-control'} />
+                </div>
+                <div>
                     <button className={'btn btn-primary'} onClick={e => this.salvar(e)}>
                         Salvar
                     </button>
@@ -142,6 +149,7 @@ export default class Veiculos extends Component {
                     <th>Marca</th>
                     <th>Modelo</th>
                     <th>Preço</th>
+                    <th>Estoque</th>
                     <th>Ações</th>
                 </tr>
                 </thead>
@@ -162,6 +170,7 @@ export default class Veiculos extends Component {
                     <td>{veiculo.marca}</td>
                     <td>{veiculo.modelo}</td>
                     <td>{veiculo.valor}</td>
+                    <td>{veiculo.quantidade}</td>
                     <td>
                         <button className={'btn btn-warning'} onClick={e => this.carregarCamposEdicao(veiculo)}>
                             <i className={'fa fa-pencil'}></i>

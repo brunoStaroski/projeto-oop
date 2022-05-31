@@ -4,7 +4,7 @@
     grid-template-columns: 15% 1fr;
     grid-template-rows: 30%;
     grid-template-areas: "menu content";
-    height: 100vh;
+    height: 350vh;
     background-color: #F5F5F5;
 }
 

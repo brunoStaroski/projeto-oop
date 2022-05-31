@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import Main from "../template/Main";
 import axios from "axios";
-import '../../styles/form-styles.css'
+import '../../styles/styles.css'
 
 const api = axios.create({
     baseURL: "http://localhost:3080",

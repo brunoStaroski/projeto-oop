@@ -8,7 +8,6 @@ import {
 import Home from '../home/Home';
 import Cliente from "../cliente/Cliente";
 import Veiculos from "../veiculos/Veiculos";
-import Estoque from "../estoque/Estoque";
 import Vendas from "../vendas/vendas";
 
 export default props =>
@@ -16,7 +15,6 @@ export default props =>
             <Route exact path={'/'} element={<Home />} />
             <Route exact path={'/clientes'} element={<Cliente />} />
             <Route exact path={'/veiculos'} element={<Veiculos />} />
-            <Route exact path={'/estoque'} element={<Estoque />} />
             <Route exact path={'/vendas'} element={<Vendas />} />
             <Route path={'*'} element={<Home />} />
         </Routes>

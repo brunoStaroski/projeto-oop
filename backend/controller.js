@@ -3,6 +3,7 @@ const app = express(), bodyParser = require("body-parser");
 const port = 3080;
 const clienteService = require('./services/clienteService');
 const veiculoService = require("./services/veiculoService");
+const estoqueService = require("./services/estoqueService");
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
