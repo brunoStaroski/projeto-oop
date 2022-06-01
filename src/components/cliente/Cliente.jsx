@@ -152,7 +152,7 @@ export default class Cliente extends Component {
 
     renderLinhasClientes() {
         if (this.state.listaCliente.length === 0) {
-            return <p>Nenhum cliente cadastrado</p>
+            return <tr><td>Nenhum cliente cadastrado</td></tr>
         }
         return this.state.listaCliente.map(cliente => {
             return (

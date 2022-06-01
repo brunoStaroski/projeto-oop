@@ -13,11 +13,10 @@ con.query = util.promisify(con.query).bind(con);
 
 module.exports = {
 
-    salvarNovoVeiculo: async function (veiculo) {
+    async salvarNovoVeiculo(veiculo) {
         const params = [veiculo.marca, veiculo.modelo, veiculo.valor];
         await con.query('INSERT INTO veiculo(marca, modelo, valor) VALUES (?, ?, ?);', params)
             .then(result => {
-                console.log(result);
                 if (result != null) {
                     estoqueService.inserirEstoque(result.insertId, veiculo.quantidade);
                 }
@@ -29,7 +28,7 @@ module.exports = {
         return true;
     },
 
-    editarVeiculo: async function (veiculo) {
+    async editarVeiculo(veiculo) {
         const params = [veiculo.id, veiculo.marca, veiculo.modelo, veiculo.valor, veiculo.id];
         await con.query('UPDATE veiculo SET id = ?, marca = ?, modelo = ?, valor = ? WHERE id = ?;', params)
             .then(result => {
@@ -42,10 +41,9 @@ module.exports = {
         return true;
     },
 
-    excluirVeiculo: async function (veiculo) {
-        const params = [veiculo.id, veiculo.marca, veiculo.modelo, veiculo.valor];
+    async excluirVeiculo(veiculo) {
         await estoqueService.deletarEstoque(veiculo.id);
-        await con.query('DELETE FROM veiculo WHERE veiculo.id = ? AND veiculo.marca = ? AND veiculo.modelo = ? AND veiculo.valor = ? ;', params)
+        await con.query('DELETE FROM veiculo WHERE veiculo.id = ? ;', [veiculo.id])
             .catch(err => {
                 console.log(err);
                 return false;
@@ -53,7 +51,7 @@ module.exports = {
         return true;
     },
 
-    obterListaVeiculos: async function () {
+    async obterListaVeiculos() {
         let listaVeiculo = [];
         let result = await con.query('SELECT * FROM veiculo ORDER BY id ASC').catch(err => console.log(err));
         for (const veiculo of result) {
@@ -62,6 +60,19 @@ module.exports = {
         }
         return listaVeiculo;
     },
+
+    async obterVeiculoPorId(idVeiculo) {
+        let result = await con.query('SELECT * FROM veiculo v WHERE id = ?;', [idVeiculo])
+            .catch(err => {
+                console.log(err);
+            });
+        let veiculo;
+        for (const veiculoTemp of result) {
+            let qtEstoque = await estoqueService.obterEstoqueVeiculo(veiculoTemp.id);
+            veiculo = {id: veiculoTemp.id, marca: veiculoTemp.marca, modelo: veiculoTemp.modelo, valor: veiculoTemp.valor, quantidade: qtEstoque}
+        }
+        return veiculo;
+    }
 
 
 

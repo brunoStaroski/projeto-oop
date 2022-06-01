@@ -8,7 +8,7 @@ import {
 import Home from '../home/Home';
 import Cliente from "../cliente/Cliente";
 import Veiculos from "../veiculos/Veiculos";
-import Vendas from "../vendas/vendas";
+import Vendas from "../vendas/Vendas";
 
 export default props =>
         <Routes>
